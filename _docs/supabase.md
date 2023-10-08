@@ -120,6 +120,19 @@ supabase db pull
 
 This command creates a new migration in supabase/migrations/<timestamp>\_remote_schema.sql which reflects the schema changes you have made previously.
 
+You will also need to create a type using the supabase CLI. By using the `--local` flag we can create types based on our local db perfect for working on a local environment.
+
+```json
+"scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    // Add this line to your scripts
+    "update-types": "npx supabase gen types typescript --local > ./src/lib/types/database.types.ts"
+  },
+```
+
 Now commit your local changes to Git and run the local development setup:
 
 ```
