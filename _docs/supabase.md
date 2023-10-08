@@ -89,3 +89,43 @@ with
   check (bucket_id = 'avatars');
 
 ```
+
+Following the docs to create a local environment and linking it to a staging environment.
+
+The first step is to set up your local repository with the Supabase CLI:
+
+```
+supabase init
+```
+
+You should see a new supabase directory. Then you need to link your local repository with your Supabase project:
+
+```
+supabase login
+supabase link --project-ref $PROJECT_ID
+```
+
+You can get your $PROJECT_ID from your project's dashboard URL:
+
+```
+https://supabase.com/dashboard/project/<project-id>
+```
+
+If you're using an existing Supabase project, you might have made schema changes through the Dashboard.
+Run the following command to pull these changes before making local schema changes from the CLI:
+
+```
+supabase db pull
+```
+
+This command creates a new migration in supabase/migrations/<timestamp>\_remote_schema.sql which reflects the schema changes you have made previously.
+
+Now commit your local changes to Git and run the local development setup:
+
+```
+git add .
+git commit -m "init supabase"
+supabase start
+```
+
+You are now ready to develop schema changes locally and create your first migration.
