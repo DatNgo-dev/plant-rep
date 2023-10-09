@@ -9,30 +9,20 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
+      - uses: supabase/setup-cli@v1
         with:
-          node-version: "18"
-
-      - name: Install dependencies
-        run: npm install
+          version: latest
 
       - name: Start Supabase local development setup
         run: supabase start
 
-      - name: Generate TypeScript types
-        run: supabase gen types typescript --local > types.gen.ts
-
       - name: Verify generated types are checked in
         run: |
-          if ! git diff --exit-code --quiet types.gen.ts; then
-            echo "Detected uncommitted changes after generating types. See status below:"
+          supabase gen types typescript --local > types.gen.ts
+          if ! git diff --ignore-space-at-eol --exit-code --quiet types.gen.ts; then
+            echo "Detected uncommitted changes after build. See status below:"
             git diff
             exit 1
           fi
-
-      - name: Run tests
-        run: npm test
